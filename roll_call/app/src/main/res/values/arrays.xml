@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="classnum">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>   <!-- 特殊字符要转义-->
+        <item> 4</item>
+        <item> 5</item>
+        <item> 6</item>
+        <item> 7</item>
+    </string-array>
+    <string-array name="timeforfirstclass">
+        <item >8:00</item>
+        <item >8:20</item>
+        <item >8:55</item>   <!-- 特殊字符要转义-->
+        <item> 9:15</item>
+        <item> 9:50</item>
+        <item> 10:10</item>
+        <item> 10:45</item>
+        <item >11:05</item>
+        <item >2:00</item>
+        <item >2:20</item>   <!-- 特殊字符要转义-->
+        <item> 2:55</item>
+        <item> 3:15</item>
+        <item> 3:50</item>
+        <item> 4:10</item>
+    </string-array>
+</resources>

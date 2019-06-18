@@ -13,7 +13,7 @@ MobSDK {
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.zjh.roll_call"
+//        applicationId "com.example.zjh.roll_call"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -38,4 +38,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/mysql-connector-java-5.1.44-bin.jar')
+    implementation files('libs/zxing.jar')
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/coursePic"
+        android:background="@drawable/timg"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:text="xx课程"
+            android:id="@+id/courseNmae"
+            android:layout_width="200dp"
+            android:layout_height="20dp" />
+        <TextView
+            android:text="xxx老师"
+            android:id="@+id/teacherName"
+            android:layout_width="200dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+</LinearLayout>
+</android.support.constraint.ConstraintLayout>
