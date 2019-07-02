@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,9 +32,16 @@ import zxing.encoding.EncodingHandler;
 
 public class AddCourse extends AppCompatActivity {
     private Button creat;
-//    private Button scan;
+    //    private Button scan;
+    private TextView courseName;
     private TextView scanresult;
     private ImageView QRcode;
+    private Spinner num;
+    private int n;
+    private int hour;
+    private String time;
+    private int minute;
+    private Spinner timeforfirstclass;
     String PATH=android.os.Environment.getExternalStorageDirectory()+
             "/"+"msg";
     public static final String NAME = "yourhead.jpg";
@@ -42,6 +50,9 @@ public class AddCourse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addcourse);
         creat=(Button)findViewById(R.id.creat);
+        num = (Spinner)findViewById(R.id.num);
+        timeforfirstclass= (Spinner)findViewById(R.id.timeforfirst);
+        courseName=(TextView) findViewById(R.id.courseName);
 //        scan=(Button)findViewById(R.id.scan);
         QRcode=(ImageView)findViewById(R.id.QRcode);
 //        scanresult=(TextView)findViewById(R.id.scanresult);
@@ -61,20 +72,57 @@ public class AddCourse extends AppCompatActivity {
         creat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String string = "陈东阳是我儿子";
-                if (string.equalsIgnoreCase(""))
-                {
-                    Toast.makeText(AddCourse.this,"请输入文本",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    try {
-                        //生成二维码图片
-                        Bitmap qrcode = EncodingHandler.createQRCode(string,600);
-                        QRcode.setImageBitmap(qrcode);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
+                String course = courseName.getText().toString();
+                if (course != null) {
+                    String string = "陈东阳是我儿子";
+                    time = (String)timeforfirstclass.getSelectedItem().toString();
+                    String[] temp =time.split(":");
+                    hour =Integer.parseInt(temp[0]);
+                    minute=Integer.parseInt(temp[1]);
+                    n =Integer.parseInt(num.getSelectedItem().toString());
+//                    Toast.makeText(AddCourse.this,n+" "+hour+" "+minute,Toast.LENGTH_LONG).show();
+                    if (string.equalsIgnoreCase("")) {
+                        Toast.makeText(AddCourse.this, "请输入文本", Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            //生成二维码图片
+                            Bitmap qrcode = EncodingHandler.createQRCode(string, 600);
+                            QRcode.setImageBitmap(qrcode);
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
+                        String ans = String.format("%02d", hour)+":"+String.format("%02d", minute)+"-"+String.format("%02d", (hour*60+minute+55*n)/60)+":"+String.format("%02d", (hour*60+minute+55*n)%60);
+//                        Toast.makeText(AddCourse.this,ans+ " "+course,Toast.LENGTH_LONG).show();
+                        MainActivity.courselist = insert(MainActivity.courselist, course);
+                        MainActivity.courselist = insert(MainActivity.courselist, ans);
+                        MainActivity.courselist = insert(MainActivity.courselist, "2132"+Math.random());
+                        HomeForTeacher.flag = 0;
+                        FileOutputStream fos=null;
+                        try {
+                            fos=openFileOutput("courinfo",MODE_APPEND);
+                            //把这些信息写入
+                            fos.write((" "+course+" "+ans+" "+"21323").getBytes());
+                            fos.flush();//刷新
+                            Toast.makeText(AddCourse.this, "创建成功", Toast.LENGTH_SHORT).show();
+                        }catch (FileNotFoundException e){
+                            e.printStackTrace();
+                            Toast.makeText(AddCourse.this, "存储失败"+e, Toast.LENGTH_SHORT).show();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                            Toast.makeText(AddCourse.this, "存储失败"+e, Toast.LENGTH_SHORT).show();
+                        }finally {
+                            if(fos!=null){
+                                try {
+                                    fos.close();
+                                }catch (IOException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
                     }
+                } else {
+                    Toast.makeText(AddCourse.this,"请完善信息", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -85,6 +133,7 @@ public class AddCourse extends AppCompatActivity {
                 return false;
             }
         });
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -166,5 +215,14 @@ public class AddCourse extends AppCompatActivity {
         }
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getPath())));
+    }
+    private static String[] insert(String[] arr, String str) {
+        int size = arr.length;  //获取数组长度
+        String[] tmp = new String[size + 1];  //新建临时字符串数组，在原来基础上长度加一
+        for (int i = 0; i < size; i++){  //先遍历将原来的字符串数组数据添加到临时字符串数组
+            tmp[i] = arr[i];
+        }
+        tmp[size] = str;  //在最后添加上需要追加的数据
+        return tmp;  //返回拼接完成的字符串数组
     }
 }

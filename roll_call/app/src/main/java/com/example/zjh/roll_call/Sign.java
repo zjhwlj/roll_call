@@ -2,24 +2,34 @@ package com.example.zjh.roll_call;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class Sign extends AppCompatActivity {
     private static final double EARTH_RADIUS = 6378.137;
     private String locationProvider;
     private String jw;
+    private int flag;
+    Calendar cal;
     private LocationManager locationManager;
     private EditText Longitude_and_latitudeEdit;
     private Button getLongAndLa;
+    private Button startSign;
     //定位权限
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -31,12 +41,16 @@ public class Sign extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign);
+        cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         initView();
     }
     private void initView(){
         locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
         //        初始化按钮对象
         getLongAndLa = (Button)findViewById(R.id.getLongAndLa);
+        startSign =(Button)findViewById(R.id.startsign);
+        flag = 0;
         Longitude_and_latitudeEdit = (EditText)findViewById(R.id.Longitude_and_latitude);
         getLongAndLa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +61,6 @@ public class Sign extends AppCompatActivity {
                 criteria.setBearingRequired(false);//不要求方位
                 criteria.setCostAllowed(true);//允许有花费
                 criteria.setPowerRequirement(Criteria.POWER_LOW);//低功耗
-
                 //从可用的位置提供器中，匹配以上标准的最佳提供器
                 locationProvider = locationManager.getBestProvider(criteria, true);
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(),
@@ -64,12 +77,33 @@ public class Sign extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 if (location != null) {
-                    Toast.makeText(Sign.this, "定位成功------->"+"location------>经度为：" + location.getLatitude() + "\n纬度为" + location.getLongitude(),
-                            Toast.LENGTH_SHORT).show();
+                 /*   Toast.makeText(Sign.this, "定位成功------->"+"location------>经度为：" + location.getLatitude() + "\n纬度为" + location.getLongitude(),
+                            Toast.LENGTH_SHORT).show();*/
 //                    jw = String.format("%.2f", location.getLatitude())+ " , "+ String.format("%.2f",location.getLongitude());
                     jw = String.valueOf(location.getLatitude())+ " , "+ String.valueOf(location.getLongitude());
+                    flag = 1;
                     //不为空,显示地理位置经纬度
                     Longitude_and_latitudeEdit.setText(jw);
+                }
+            }
+        });
+        startSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                int minute = cal.get(Calendar.MINUTE);
+                if(((hour * 60 + minute) >=480 && (hour * 60 + minute )<=510 )|| ((hour* 60 + minute) >=690 && (hour * 60 + minute )<= 720)) {
+                    if (flag == 1) {
+                        Toast.makeText(Sign.this, "签到成功", Toast.LENGTH_LONG).show();
+                        flag = 2;
+                    } else if (flag == 0) {
+                        Toast.makeText(Sign.this, "请先获取位置", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Sign.this, "请勿重复签到", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(Sign.this, hour+":"+minute+"不在签到时间内,上课前半小时和下课前半小时可签到",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -93,5 +127,15 @@ public class Sign extends AppCompatActivity {
         s = Math.round(s * 10000d) / 10000d;
         s = s * 1000;//单位：米
         return s;
+    }
+    public void setButtonImgStyle(ImageButton button, int drawable, int color) {
+        Drawable originalDrawable = ContextCompat.getDrawable(this, drawable);
+        Drawable tintDrawable = tintDrawable(originalDrawable, ContextCompat.getColor(this, color));
+        button.setImageDrawable(tintDrawable);
+    }
+    private Drawable tintDrawable(Drawable drawable, int colors) {
+        Drawable wrappedDrawable = DrawableCompat.wrap(drawable).mutate();
+        DrawableCompat.setTint(wrappedDrawable, colors);
+        return wrappedDrawable;
     }
 }

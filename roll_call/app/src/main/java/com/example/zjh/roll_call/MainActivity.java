@@ -18,10 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
+
+import static cn.smssdk.utils.a.e;
 
 public class MainActivity extends AppCompatActivity {
     private Button loginInButton;
@@ -30,11 +38,59 @@ public class MainActivity extends AppCompatActivity {
     private EditText passeowrdEditText;
     private TextView forgrtPassword;
     private String locationProvider;
+    public static String[] courselist;
     private LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FileInputStream fis = null;
+        byte[] buffer = null;
+        try {
+            fis = openFileInput("courinfo");
+            buffer = new byte[fis.available()];
+            fis.read(buffer);
+            String data = new String(buffer);
+            //定义数组
+            courselist = data.split(" ");
+            System.out.print(" 读取成功 " + data.toString());
+            //数组转换成list
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            FileOutputStream fos=null;
+            try {
+                fos=openFileOutput("courinfo",MODE_PRIVATE);
+                //把这些信息写入
+                fos.write(("人工智能"+" "+"8:30-12:00"+" "+"21323").getBytes());
+                courselist=new String []{"人工智能","8:30-12:00","21323"};
+                fos.flush();//刷新
+            }catch (FileNotFoundException e2){
+                e2.printStackTrace();
+                Toast.makeText(MainActivity.this, "存储失败"+e, Toast.LENGTH_SHORT).show();
+            }catch (IOException e3){
+                e3.printStackTrace();
+                Toast.makeText(MainActivity.this, "存储失败"+e, Toast.LENGTH_SHORT).show();
+            }finally {
+                if(fos!=null){
+                    try {
+                        fos.close();
+                    }catch (IOException e1){
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this, "读取失败" + e, Toast.LENGTH_LONG).show();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         initView();
     }
     private void initView(){
@@ -57,8 +113,71 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Home.class);
-                startActivity(i);
+                String account = accountEditText.getText().toString();
+                String password = passeowrdEditText.getText().toString();
+                if(account!=null&&password!=null) {
+                    if (account.equals("15900000003") && password.equals("123456")) {
+                        Intent i = new Intent(MainActivity.this, HomeForStudent.class);
+                        startActivity(i);
+                    } else if (account.equals("15900000002") && password.equals("123456")) {
+                        Intent i = new Intent(MainActivity.this, HomeForTeacher.class);
+                        startActivity(i);
+                    } else {
+                        FileInputStream fis = null;
+                        byte[] buffer = null;
+                        try {
+                            fis = openFileInput("login");
+                            buffer = new byte[fis.available()];
+                            fis.read(buffer);
+                            String data = new String(buffer);
+                            //定义数组
+                            String aa[] = data.split(" ");
+                            System.out.print(" 读取成功 " + data.toString());
+                            //数组转换成list
+                            List<String> userinfolist = Arrays.asList(aa);
+//                        Toast.makeText(MainActivity.this,userinfolist.get(0)+ account,Toast.LENGTH_LONG).show();
+                            if (userinfolist.contains(account)) {
+                                int a = userinfolist.indexOf(account);
+                                Log.e("Main", a + " ");
+//                            Toast.makeText(MainActivity.this,a,Toast.LENGTH_SHORT).show();
+                                String realpassword = aa[a + 1];
+                                String identity = aa[a + 2];
+//                            Toast.makeText(MainActivity.this,userinfolist.get(0)+ realpassword,Toast.LENGTH_LONG).show();
+                                if (realpassword.equals(password)) {
+                                    int n = Integer.parseInt(identity);
+                                    if (n == 1) {
+                                        Intent i = new Intent(MainActivity.this, HomeForStudent.class);
+                                        startActivity(i);
+                                    } else {
+                                        Intent i = new Intent(MainActivity.this, HomeForTeacher.class);
+                                        startActivity(i);
+                                    }
+                                } else {
+                                    Toast.makeText(MainActivity.this, "账号或密码错误", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(MainActivity.this, "账号不存在", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "该手机暂未注册" + e, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "读取失败" + e, Toast.LENGTH_LONG).show();
+                        } finally {
+                            if (fis != null) {
+                                try {
+                                    fis.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"请输入账号密码",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         forgrtPassword.setOnClickListener(new View.OnClickListener() {

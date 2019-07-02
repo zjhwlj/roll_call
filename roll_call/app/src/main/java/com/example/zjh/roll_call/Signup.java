@@ -135,8 +135,7 @@ public class Signup extends Activity {
                     mima = password.getText().toString();
                     confmima = confimPassword.getText().toString();
                     if (mima != null && confmima != null) {
-                        if (mima.equals(confmima) && flag == 1) {
-                            viable = true;
+                        if (mima.equals(confmima)) {
                         } else {
                             toast("两次密码不一致");
                         }
@@ -149,18 +148,29 @@ public class Signup extends Activity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mima = password.getText().toString();
+                confmima = confimPassword.getText().toString();
+                if (mima != null && confmima != null) {
+                    if (mima.equals(confmima) && flag == 1) {
+                        viable = true;
+                    } else {
+                        toast("两次密码不一致");
+                    }
+                }
                 if (viable == true) {
-                    Toast.makeText(Signup.this, "注册成功", Toast.LENGTH_SHORT).show();
                     FileOutputStream fos=null;
                     try {
-                        fos=openFileOutput("login",MODE_PRIVATE);
+                        fos=openFileOutput("login",MODE_APPEND);
                         //把这些信息写入
-                        fos.write((phone+" "+mima).getBytes());
+                        fos.write((" "+phone+" "+mima+" "+identify+" ").getBytes());
                         fos.flush();//刷新
+                        Toast.makeText(Signup.this, "注册成功", Toast.LENGTH_SHORT).show();
                     }catch (FileNotFoundException e){
                         e.printStackTrace();
+                        Toast.makeText(Signup.this, "存储失败"+e, Toast.LENGTH_SHORT).show();
                     }catch (IOException e){
                         e.printStackTrace();
+                        Toast.makeText(Signup.this, "存储失败"+e, Toast.LENGTH_SHORT).show();
                     }finally {
                         if(fos!=null){
                             try {
@@ -170,6 +180,7 @@ public class Signup extends Activity {
                             }
                         }
                     }
+
                 } else {
                     Toast.makeText(Signup.this, "尚有信息未完善", Toast.LENGTH_SHORT).show();
                 }
@@ -178,34 +189,9 @@ public class Signup extends Activity {
         toLoginIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viable == true) {
-                    FileInputStream fis=null;
-                    byte[] buffer=null;
-                    try {
-                        fis=openFileInput("login");
-                        buffer=new  byte[fis.available()];
-                        fis.read(buffer);
-                    }catch (FileNotFoundException e){
-                        e.printStackTrace();
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }finally {
-                        if(fis!=null){
-                            try {
-                                fis.close();
-                            }catch (IOException e){
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    String data=new String(buffer);
-                    String name=data.split(" ")[0];
-                    String id=data.split(" ")[1];
-                    toast(name+ " "+ id);
-               /*     Intent i = new Intent(Signup.this, MainActivity.class);
-                    startActivity(i);*/
+                    Intent i = new Intent(Signup.this, MainActivity.class);
+                    startActivity(i);
                 }
-            }
         });
 
     }
@@ -240,7 +226,7 @@ public class Signup extends Activity {
                 TIME = 60;//时间重置
                 getSignupcheck.setText("重新发送验证码");
             } else {
-                getSignupcheck.setText(TIME + "重新发送验证码");
+                getSignupcheck.setText(TIME + "s重新发送验证码");
             }
         }
     };

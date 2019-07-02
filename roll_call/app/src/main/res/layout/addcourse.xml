@@ -12,15 +12,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1">
         <TextView
-            android:text="学时："
+            android:text="课程名："
             android:layout_width="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/credit"
+            android:id="@+id/courseName"
             android:layout_width="match_parent"
             android:layout_marginRight="30dp"
-            android:inputType="number"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
@@ -86,7 +85,6 @@
             android:id="@+id/classroom"
             android:layout_width="match_parent"
             android:layout_marginRight="30dp"
-            android:inputType="number"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout

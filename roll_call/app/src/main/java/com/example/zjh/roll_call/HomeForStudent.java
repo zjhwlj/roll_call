@@ -1,0 +1,216 @@
+package com.example.zjh.roll_call;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandler
+    private List<Notice> noticeList = new ArrayList<Notice>();
+    private Button searchcourse;
+    private DrawerLayout mDrawerLayout;
+    private ImageView head;
+    private LinearLayout chooseLinearLayout;
+    String PATH=android.os.Environment.getExternalStorageDirectory()+
+            "/"+"msg";
+    public static final String NAME = "yourhead.jpg";
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.home);
+        setContentView(R.layout.homemain);
+        searchcourse=(Button) findViewById(R.id.searchcourse);
+       /* mDrawerLayout = findViewById(R.id.dl_left);
+         head = findViewById(R.id.head);
+        chooseLinearLayout = (LinearLayout) findViewById(R.id.chooseLinearLayout);
+        if(getLoacalBitmap(PATH+"/"+NAME)!=null){
+            Bitmap temp = getLoacalBitmap(PATH+"/"+NAME);
+            head.setImageBitmap(temp);
+        }
+        else{Toast.makeText(Home.this, PATH+'/'+NAME,
+                Toast.LENGTH_SHORT).show();}
+       btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                showDrawerLayout();
+            }
+        });*/
+        initNotice();
+        NoticeAdapter adapter = new NoticeAdapter(HomeForStudent.this,
+                R.layout.notice, noticeList);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+             /*   Notice notice = noticeList.get(position);
+                Toast.makeText(Home.this, notice.getName(),
+                        Toast.LENGTH_SHORT).show();*/
+                Intent i = new Intent(HomeForStudent.this, Sign.class);
+                startActivity(i);
+            }
+        });
+        searchcourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeForStudent.this,"暂未查询到相关信息",Toast.LENGTH_SHORT);
+                /*Intent i = new Intent(HomeForStudent.this, AddCourse.class);
+                startActivity(i);*/
+            }
+        });
+//        head.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showChoosePicDialog();
+//            }
+//        });
+    }
+    /**
+     * 显示修改图片的对话框
+
+     protected void showChoosePicDialog() {
+     AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
+     builder.setTitle("添加图片");
+     String[] items = { "选择本地照片"};
+     builder.setNegativeButton("取消", null);
+     builder.setItems(items, new DialogInterface.OnClickListener() {
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+    switch (which) {
+    case 0: // 选择本地照片
+    Intent galleryIntent = ImageUtil
+    .getCropHelperInstance()
+    .buildGalleryIntent();
+    startActivityForResult(galleryIntent,
+    ImageUtil.REQUEST_GALLERY);
+    break;
+    }
+    }
+    });
+     builder.show();
+     }  */
+    private void initNotice(){
+        int i;
+        for(i=0;i<MainActivity.courselist.length/3;i++) {
+            Notice course = new Notice(MainActivity.courselist[i*3], MainActivity.courselist[i*3+1], MainActivity.courselist[i*3+2]);
+            noticeList.add(course);
+        }
+/*        Notice course2 = new Notice("Apple", "陈xx",21312312);
+        noticeList.add(course2);
+        Notice course3 = new Notice("Apple", "陈xx",21312312);
+        noticeList.add(course3);
+        Notice course4 = new Notice("Apple", "陈xx",21312312);
+        noticeList.add(course4);
+        Notice course5 = new Notice("Apple", "陈xx",21312312);
+        noticeList.add(course5);
+        Notice course6 = new Notice("Apple", "陈xx",21312312);
+        noticeList.add(course6);
+        Notice course7 = new Notice("Apple", "陈xx",21312312);
+        noticeList.add(course7);*/
+    }
+   /* private void showDrawerLayout() {
+        if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+        else {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ImageUtil.getCropHelperInstance().sethandleResultListerner((ImageUtil.CropHandler) Home.this, requestCode, resultCode,
+                data);
+    }
+    @Override
+    public void onPhotoCropped(Bitmap photo,int requestCode) {
+        switch (requestCode){
+            case ImageUtil.RE_GALLERY:
+                saveImage(photo,PATH,NAME);
+                head.setImageBitmap(photo);
+                break;
+        }
+    }
+    @Override
+    public void onCropCancel() {
+
+    }
+    @Override
+    public void onCropFailed(String message) {
+
+    }
+    @Override
+    public Activity getContext() {
+        return Home.this;
+    }
+    //保存图片到本地路径
+    public File saveImage(Bitmap bmp, String path, String fileName) {
+        File appDir = new File(path);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+            fos.flush();
+            fos.close();
+            Snackbar
+                    .make(chooseLinearLayout, "保存头像成功", Snackbar.LENGTH_LONG)
+                    .setAction("确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    }).show();
+         *//*   Toast.makeText(Home.this, "保存成功",
+                    Toast.LENGTH_SHORT).show();*//*
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(Home.this, "保存失败"+e,
+                    Toast.LENGTH_SHORT).show();
+            Log.i("Home", "保存失败"+e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(Home.this, "保存头像失败"+e,
+                    Toast.LENGTH_SHORT).show();
+            Log.i("Home", "保存头像失败"+e);
+        }
+        return file;
+    }
+
+    *//** * @Title: getLoacalBitmap * @Description: 加载本地图片 * @param @param url 本地路径 * @param @return * @return Bitmap * @throws *//*
+    public static Bitmap getLoacalBitmap(String url) {
+        if (url != null) {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(url);
+                return BitmapFactory.decodeStream(fis); // /把流转化为Bitmap图片
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            } finally {
+                if(fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    fis = null;
+                }
+            }
+        } else {
+            return null;
+        }
+    }*/
+}

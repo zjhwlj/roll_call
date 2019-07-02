@@ -1,10 +1,10 @@
 package com.example.zjh.roll_call;
 
 public class Notice {
-    private  int imageId;
+    private  String imageId;
     private String name;
     private String subname;
-    public Notice (String name , String subName ,int noticeId){
+    public Notice (String name , String subName ,String noticeId){
         this.name = name;
         this.subname = subName;
         this.imageId = imageId;
@@ -16,7 +16,7 @@ public class Notice {
     public String getsubName() {
         return subname;
     }
-    public int getImageId() {
+    public String getImageId() {
         return imageId;
     }
 }
