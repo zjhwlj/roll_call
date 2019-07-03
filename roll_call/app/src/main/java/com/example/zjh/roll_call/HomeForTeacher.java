@@ -1,15 +1,20 @@
 package com.example.zjh.roll_call;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +25,14 @@ public class HomeForTeacher extends Activity {
     private DrawerLayout mDrawerLayout;
     private ImageView head;
     public static  int flag =0;
+    private TextView changephone;
+    private TextView changpassword;
+    private ImageButton back;
+    private TextView suggest;
+    private TextView aboutus;
+    private TextView score;
+    private DrawerLayout left;
+    public static String[] courselist1 = MainActivity.courselist;
     private LinearLayout chooseLinearLayout;
     String PATH=android.os.Environment.getExternalStorageDirectory()+
             "/"+"msg";
@@ -27,8 +40,15 @@ public class HomeForTeacher extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.home);
-        setContentView(R.layout.homeforteacher);
+        setContentView(R.layout.home1);
         addcourse=(Button) findViewById(R.id.addcourse);
+        changephone =(TextView)findViewById(R.id.changphone);
+        left=(DrawerLayout)findViewById(R.id.dl_left);
+        changpassword = (TextView)findViewById(R.id.changpassword);
+        suggest = (TextView)findViewById(R.id.suggest);
+        aboutus = (TextView)findViewById(R.id.aboutus);
+        back = (ImageButton)findViewById(R.id.back);
+        score = (TextView) findViewById(R.id.score);
        /* mDrawerLayout = findViewById(R.id.dl_left);
          head = findViewById(R.id.head);
         chooseLinearLayout = (LinearLayout) findViewById(R.id.chooseLinearLayout);
@@ -60,8 +80,8 @@ public class HomeForTeacher extends Activity {
              /*   Notice notice = noticeList.get(position);
                 Toast.makeText(Home.this, notice.getName(),
                         Toast.LENGTH_SHORT).show();*/
-     /*           Intent i = new Intent(HomeForTeacher.this, Sign.class);
-                startActivity(i);*/
+                Intent i = new Intent(HomeForTeacher.this, StudentInfo.class);
+                startActivity(i);
             }
         });
         addcourse.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +89,79 @@ public class HomeForTeacher extends Activity {
             public void onClick(View v) {
                 Intent i = new Intent(HomeForTeacher.this, AddCourse.class);
                 startActivity(i);
+            }
+        });
+        changephone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeForTeacher.this, ChangePhone.class);
+                startActivity(i);
+            }
+        });
+        changpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeForTeacher.this, ChangePassword.class);
+                startActivity(i);
+            }
+        });
+        suggest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeForTeacher.this, Suggest.class);
+                startActivity(i);
+            }
+        });
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(HomeForTeacher.this);
+                builder.setTitle("关于我们"); //设置标题
+                builder.setMessage("苦逼程序员"); //设置内容
+                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
+        score.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(HomeForTeacher.this);
+                builder.setTitle("告示"); //设置标题
+                builder.setMessage("程序员正在加紧开发中，头发都要掉光了"); //设置内容
+                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                left.openDrawer(Gravity.LEFT);//侧滑打开  不设置则不会默认打开
             }
         });
 //        head.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +198,8 @@ public class HomeForTeacher extends Activity {
     private void initNotice(){
         int i;
         noticeList = new ArrayList<Notice>();
-        for(i=0;i<MainActivity.courselist.length/3;i++) {
-            Notice course = new Notice(MainActivity.courselist[i*3], MainActivity.courselist[i*3+1], MainActivity.courselist[i*3+2]);
+        for(i=0;i<courselist1.length/3;i++) {
+            Notice course = new Notice(courselist1[i*3], courselist1[i*3+1], courselist1[i*3+2]);
             noticeList.add(course);
         }
     }

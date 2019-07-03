@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/b"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<EditText
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintVertical_bias="0.05"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:hint="注册手机号"
-    android:textColorHint="#fff"
-    android:layout_marginLeft="30dp"
-    android:layout_marginRight="30dp"/>
     <EditText
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="新手机号"
+        android:textColor="#fff"
+        android:id="@+id/newphone"
         android:textColorHint="#fff"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"/>
@@ -28,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/yui"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35">
@@ -35,6 +29,8 @@
             android:layout_width="200dp"
             android:layout_marginLeft="30dp"
             android:hint="验证码"
+            android:id="@+id/yzm"
+            android:textColor="#fff"
             android:textColorHint="#fff"
             android:layout_height="wrap_content" />
         <Button
@@ -44,6 +40,22 @@
             android:paddingLeft="10dp"
             android:background="#1E90FF"
             android:textColor="#fff"
+            android:id="@+id/getyzm"
             android:text="获取验证码" />
     </LinearLayout>
+    <Button
+        android:layout_marginTop="60dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/yui"
+        app:layout_constraintTop_toBottomOf="@+id/yui"
+        android:id="@+id/confim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1E90FF"
+        android:textColor="#fff"
+        android:layout_marginRight="120dp"
+        android:layout_marginLeft="120dp"
+        android:text="确认修改"
+        tools:ignore="UnknownId" />
 </android.support.constraint.ConstraintLayout>

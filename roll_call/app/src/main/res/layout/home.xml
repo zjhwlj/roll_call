@@ -9,12 +9,12 @@
         android:layout_height="match_parent">
         <include layout="@layout/homemain"/>"
     </LinearLayout>
- <!--   &lt;!&ndash;侧滑菜单&ndash;&gt;
+    <!--侧滑菜单-->
     <LinearLayout
         android:layout_width="270dp"
         android:layout_height="match_parent"
         android:background="#fff"
         android:layout_gravity="start">
         <include layout="@layout/menu"/>
-    </LinearLayout>-->
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

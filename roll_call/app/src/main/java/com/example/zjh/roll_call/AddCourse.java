@@ -74,7 +74,7 @@ public class AddCourse extends AppCompatActivity {
             public void onClick(View view) {
                 String course = courseName.getText().toString();
                 if (course != null) {
-                    String string = "陈东阳是我儿子";
+                    String string = "2019"+Math.random();
                     time = (String)timeforfirstclass.getSelectedItem().toString();
                     String[] temp =time.split(":");
                     hour =Integer.parseInt(temp[0]);
@@ -82,7 +82,7 @@ public class AddCourse extends AppCompatActivity {
                     n =Integer.parseInt(num.getSelectedItem().toString());
 //                    Toast.makeText(AddCourse.this,n+" "+hour+" "+minute,Toast.LENGTH_LONG).show();
                     if (string.equalsIgnoreCase("")) {
-                        Toast.makeText(AddCourse.this, "请输入文本", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddCourse.this, "请输入课程码", Toast.LENGTH_SHORT).show();
                     } else {
                         try {
                             //生成二维码图片

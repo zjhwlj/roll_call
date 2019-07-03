@@ -21,15 +21,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:text="学生"
+                android:text="张三"
+                android:textSize="20sp"
                 android:id="@+id/identity"
-                android:layout_width="200dp"
-                android:layout_height="20dp" />
-            <TextView
-                android:text="xxx"
-                android:id="@+id/call"
-                android:layout_width="200dp"
-                android:layout_height="30dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -43,7 +39,20 @@
         android:orientation="vertical">
         <TextView
             style="@style/MenuTabText"
+            android:text="180327000"
+            />
+        <TextView
+            style="@style/MenuTabText"
+            android:text="福州大学  计算机专业"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ffffff"></View>
+        <TextView
+            style="@style/MenuTabText"
             android:text="更改手机号码"
+            android:id="@+id/changphone"
             android:drawableLeft="@drawable/shouji"
             />
         <View
@@ -52,6 +61,7 @@
             android:background="#ffffff"></View>
         <TextView
             style="@style/MenuTabText"
+            android:id="@+id/changpassword"
             android:text="更改密码"
             android:drawableLeft="@drawable/mima54"
             android:background="#DCDCDC"/>
@@ -62,6 +72,7 @@
         <TextView
             style="@style/MenuTabText"
             android:text="成绩"
+            android:id="@+id/score"
             android:drawableLeft="@drawable/chazhao"
             android:background="#DCDCDC"/>
         <View
@@ -71,6 +82,7 @@
         <TextView
             style="@style/MenuTabText"
             android:text="意见反馈"
+            android:id="@+id/suggest"
             android:drawableLeft="@drawable/bianjixiugaiqianbishuxie"
             android:background="#DCDCDC"/>
         <View
@@ -80,6 +92,7 @@
         <TextView
             style="@style/MenuTabText"
             android:text="关于我们"
+            android:id="@+id/aboutus"
             android:drawableLeft="@drawable/xinxi"
             android:background="#DCDCDC"/>
     </LinearLayout>

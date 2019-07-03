@@ -1,6 +1,7 @@
 package com.example.zjh.roll_call;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -25,6 +27,8 @@ public class Sign extends AppCompatActivity {
     private String locationProvider;
     private String jw;
     private int flag;
+    public static int isdect=0;
+    private TextView statute;
     Calendar cal;
     private LocationManager locationManager;
     private EditText Longitude_and_latitudeEdit;
@@ -50,6 +54,7 @@ public class Sign extends AppCompatActivity {
         //        初始化按钮对象
         getLongAndLa = (Button)findViewById(R.id.getLongAndLa);
         startSign =(Button)findViewById(R.id.startsign);
+        statute=(TextView)findViewById(R.id.statute);
         flag = 0;
         Longitude_and_latitudeEdit = (EditText)findViewById(R.id.Longitude_and_latitude);
         getLongAndLa.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +74,7 @@ public class Sign extends AppCompatActivity {
                     ActivityCompat.requestPermissions(Sign.this, PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
                     Toast.makeText(Sign.this, "onCreate: 没有权限 ",
                             Toast.LENGTH_SHORT).show();
+                    statute.setText("签到失败,无法获取位置");
                     return;
                 }
                 Location location = locationManager.getLastKnownLocation(locationProvider);
@@ -92,10 +98,29 @@ public class Sign extends AppCompatActivity {
             public void onClick(View v) {
                 int hour = cal.get(Calendar.HOUR_OF_DAY);
                 int minute = cal.get(Calendar.MINUTE);
-                if(((hour * 60 + minute) >=480 && (hour * 60 + minute )<=510 )|| ((hour* 60 + minute) >=690 && (hour * 60 + minute )<= 720)) {
+                if (ContextCompat.checkSelfPermission(Sign.this, Manifest.permission.CAMERA)
+
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(Sign.this,
+
+                            new String[]{Manifest.permission.CAMERA}, 1);
+
+                } else {
+                    if(((hour * 60 + minute) >=480 && (hour * 60 + minute )<=510 )|| ((hour* 60 + minute) >=690 && (hour * 60 + minute )<= 720)) {
                     if (flag == 1) {
-                        Toast.makeText(Sign.this, "签到成功", Toast.LENGTH_LONG).show();
-                        flag = 2;
+                        startActivity(new Intent(Sign.this, DetectActivity.class));
+                        if(isdect ==1) {
+                            Toast.makeText(Sign.this, "签到成功", Toast.LENGTH_LONG).show();
+                            statute.setText("签到成功");
+                            Drawable drawable = getResources().getDrawable(R.drawable.hs);
+                            startSign.setBackground(drawable);
+                            flag = 2;
+                        }
+                        else{
+                            Toast.makeText(Sign.this, "人脸检测失败", Toast.LENGTH_LONG).show();
+                            statute.setText("签到成功，人脸检测失败");
+                        }
                     } else if (flag == 0) {
                         Toast.makeText(Sign.this, "请先获取位置", Toast.LENGTH_SHORT).show();
                     } else {
@@ -104,7 +129,10 @@ public class Sign extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(Sign.this, hour+":"+minute+"不在签到时间内,上课前半小时和下课前半小时可签到",Toast.LENGTH_LONG).show();
+                        statute.setText("签到失败，不在签到时间内,上课前半小时和下课前半小时可签到");
                 }
+                }
+
             }
         });
     }

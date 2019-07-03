@@ -1,34 +1,52 @@
 package com.example.zjh.roll_call;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import cn.smssdk.SMSSDK;
 
 public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandler
     private List<Notice> noticeList = new ArrayList<Notice>();
     private Button searchcourse;
+    private ImageButton back;
     private DrawerLayout mDrawerLayout;
     private ImageView head;
     private LinearLayout chooseLinearLayout;
+    private DrawerLayout left;
+    private TextView changephone;
+    private TextView changpassword;
+    private TextView suggest;
+    private TextView aboutus;
+    private TextView score;
+    public static String[] courselist2 = MainActivity.courselist;
     String PATH=android.os.Environment.getExternalStorageDirectory()+
             "/"+"msg";
     public static final String NAME = "yourhead.jpg";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.home);
-        setContentView(R.layout.homemain);
+        setContentView(R.layout.home);
         searchcourse=(Button) findViewById(R.id.searchcourse);
+        back = (ImageButton)findViewById(R.id.back);
        /* mDrawerLayout = findViewById(R.id.dl_left);
          head = findViewById(R.id.head);
         chooseLinearLayout = (LinearLayout) findViewById(R.id.chooseLinearLayout);
@@ -48,6 +66,12 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
         initNotice();
         NoticeAdapter adapter = new NoticeAdapter(HomeForStudent.this,
                 R.layout.notice, noticeList);
+        left=(DrawerLayout)findViewById(R.id.dl_left);
+        changephone =(TextView)findViewById(R.id.changphone);
+        changpassword = (TextView)findViewById(R.id.changpassword);
+        suggest = (TextView)findViewById(R.id.suggest);
+        aboutus = (TextView)findViewById(R.id.aboutus);
+        score = (TextView) findViewById(R.id.score);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,6 +83,104 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
                         Toast.LENGTH_SHORT).show();*/
                 Intent i = new Intent(HomeForStudent.this, Sign.class);
                 startActivity(i);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeForStudent.this);
+                builder.setMessage("要加入该课程吗");
+                builder.setTitle("提示");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                        Toast.makeText(HomeForStudent.this,"加入成功",Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                //参数都设置完成了，创建并显示出来
+                builder.create().show();
+                return false;
+            }
+        });
+        score.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(HomeForStudent.this);
+                builder.setTitle("告示"); //设置标题
+                builder.setMessage("程序员正在加紧开发中，头发都要掉光了"); //设置内容
+                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
+        changephone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeForStudent.this, ChangePhone.class);
+                startActivity(i);
+            }
+        });
+        changpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeForStudent.this, ChangePassword.class);
+                startActivity(i);
+            }
+        });
+        suggest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeForStudent.this, Suggest.class);
+                startActivity(i);
+            }
+        });
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(HomeForStudent.this);
+                builder.setTitle("关于我们"); //设置标题
+                builder.setMessage("苦逼程序员"); //设置内容
+                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                left.openDrawer(Gravity.LEFT);//侧滑打开  不设置则不会默认打开
             }
         });
         searchcourse.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +198,14 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
 //            }
 //        });
     }
+    private void showDrawerLayout() {
+        if (!left.isDrawerOpen(Gravity.LEFT)) {
+            left.openDrawer(Gravity.LEFT);
+        } else {
+            left.closeDrawer(Gravity.LEFT);
+        }
+    }
+
     /**
      * 显示修改图片的对话框
 
@@ -102,8 +232,8 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
      }  */
     private void initNotice(){
         int i;
-        for(i=0;i<MainActivity.courselist.length/3;i++) {
-            Notice course = new Notice(MainActivity.courselist[i*3], MainActivity.courselist[i*3+1], MainActivity.courselist[i*3+2]);
+        for(i=0;i<courselist2.length/3;i++) {
+            Notice course = new Notice(courselist2[i*3],courselist2[i*3+1],courselist2[i*3+2]);
             noticeList.add(course);
         }
 /*        Notice course2 = new Notice("Apple", "陈xx",21312312);

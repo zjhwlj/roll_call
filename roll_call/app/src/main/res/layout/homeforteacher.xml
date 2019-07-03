@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:id="@+id/homeMain"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageButton
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/back"
+        android:background="@drawable/shouzhi"/>
     <RelativeLayout
         android:id="@+id/search"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText

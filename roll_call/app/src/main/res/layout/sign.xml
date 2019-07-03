@@ -35,6 +35,16 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/startsign"
-        android:text="开始签到"
+        android:text="签到"
         android:textColor="#000"/>
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/startsign"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/statute"
+        android:text=""
+        android:gravity="center_horizontal"/>
 </android.support.constraint.ConstraintLayout>
