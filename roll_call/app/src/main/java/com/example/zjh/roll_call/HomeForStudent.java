@@ -23,10 +23,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.smssdk.SMSSDK;
+import zxing.activity.CaptureActivity;
 
 public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandler
     private List<Notice> noticeList = new ArrayList<Notice>();
     private Button searchcourse;
+    private ImageView sear;
+    public static final int RESULT_OK = -1;
+    private int REQUEST_CODE_SCAN = 111;
     private ImageButton back;
     private DrawerLayout mDrawerLayout;
     private ImageView head;
@@ -47,6 +51,7 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
         setContentView(R.layout.home);
         searchcourse=(Button) findViewById(R.id.searchcourse);
         back = (ImageButton)findViewById(R.id.back);
+        sear = (ImageView)findViewById(R.id.stusearchImg);
        /* mDrawerLayout = findViewById(R.id.dl_left);
          head = findViewById(R.id.head);
         chooseLinearLayout = (LinearLayout) findViewById(R.id.chooseLinearLayout);
@@ -74,6 +79,12 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
         score = (TextView) findViewById(R.id.score);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
+        sear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeForStudent.this,"暂未搜索到该课程",Toast.LENGTH_LONG).show();
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -81,6 +92,13 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
              /*   Notice notice = noticeList.get(position);
                 Toast.makeText(Home.this, notice.getName(),
                         Toast.LENGTH_SHORT).show();*/
+                if(position==0){
+//                    Toast.makeText(HomeForStudent.this,"position"+position,Toast.LENGTH_LONG).show();
+                    Sign.courseid=1;
+                }
+                else{
+                    Sign.courseid=2;
+                }
                 Intent i = new Intent(HomeForStudent.this, Sign.class);
                 startActivity(i);
             }
@@ -186,7 +204,20 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
         searchcourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeForStudent.this,"暂未查询到相关信息",Toast.LENGTH_SHORT);
+                Intent intent = new Intent(HomeForStudent.this, CaptureActivity.class);
+                /*ZxingConfig是配置类  可以设置是否显示底部布局，闪光灯，相册，是否播放提示音  震动等动能
+                 * 也可以不传这个参数
+                 * 不传的话  默认都为默认不震动  其他都为true
+                 * */
+
+                //ZxingConfig config = new ZxingConfig();
+                //config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
+                //config.setPlayBeep(true);//是否播放提示音
+                //config.setShake(true);//是否震动
+                //config.setShowAlbum(true);//是否显示相册
+                //config.setShowFlashLight(true);//是否显示闪光灯
+                //intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+                startActivityForResult(intent, REQUEST_CODE_SCAN);
                 /*Intent i = new Intent(HomeForStudent.this, AddCourse.class);
                 startActivity(i);*/
             }
@@ -343,4 +374,34 @@ public  class HomeForStudent extends Activity {//implements ImageUtil.CropHandle
             return null;
         }
     }*/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // 扫描二维码/条码回传
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            if (data != null) {
+                String string = data.getExtras().getString("result");
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeForStudent.this);
+                builder.setMessage("要加入 "+string+"  吗？");
+                builder.setTitle("提示");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    //设置确定按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); //关闭dialog
+                        Toast.makeText(HomeForStudent.this,"加入成功",Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() { //设置取消按钮
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                //参数都设置完成了，创建并显示出来
+                builder.create().show();
+            }
+        }
+    }
 }

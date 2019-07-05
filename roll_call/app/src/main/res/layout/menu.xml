@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:text="张三"
+                android:text="student"
                 android:textSize="20sp"
                 android:id="@+id/identity"
                 android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             />
         <TextView
             style="@style/MenuTabText"
-            android:text="福州大学  计算机专业"
+            android:text="福州大学  计算机计术"
             />
         <View
             android:layout_width="match_parent"

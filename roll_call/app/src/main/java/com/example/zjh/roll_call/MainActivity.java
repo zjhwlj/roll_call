@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 fos=openFileOutput("courinfo",MODE_PRIVATE);
                 //把这些信息写入
-                fos.write(("人工智能"+" "+"8:30-12:00"+" "+"21323").getBytes());
-                courselist=new String []{"人工智能","8:30-12:00","21323"};
+                fos.write(("人工智能"+" "+"8:20-11:05"+" "+"000001"+" "+"机器学习"+" "+"14:00-16:35"+" "+"000002").getBytes());
+                courselist=new String []{"人工智能","8:20-11:05","000001","机器学习","14:00-16:35","000002"};
                 fos.flush();//刷新
             }catch (FileNotFoundException e2){
                 e2.printStackTrace();
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String account = accountEditText.getText().toString();
                 String password = passeowrdEditText.getText().toString();
-                if(account!=null&&password!=null) {
+                if(!account.equals("")&&!password.equals("")) {
                     if (account.equals("15900000003") && password.equals("123456")) {
                         Intent i = new Intent(MainActivity.this, HomeForStudent.class);
                         startActivity(i);
@@ -160,10 +160,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
-                            Toast.makeText(MainActivity.this, "该手机暂未注册" + e, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "该手机暂未注册" , Toast.LENGTH_LONG).show();
                         } catch (IOException e) {
                             e.printStackTrace();
-                            Toast.makeText(MainActivity.this, "读取失败" + e, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "读取失败", Toast.LENGTH_LONG).show();
                         } finally {
                             if (fis != null) {
                                 try {

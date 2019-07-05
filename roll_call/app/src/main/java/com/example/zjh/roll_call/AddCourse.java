@@ -73,8 +73,8 @@ public class AddCourse extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String course = courseName.getText().toString();
-                if (course != null) {
-                    String string = "2019"+Math.random();
+                if (!course.equals("")) {
+                    String string = "课程码：000003";
                     time = (String)timeforfirstclass.getSelectedItem().toString();
                     String[] temp =time.split(":");
                     hour =Integer.parseInt(temp[0]);

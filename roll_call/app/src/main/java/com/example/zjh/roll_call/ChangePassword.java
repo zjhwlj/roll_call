@@ -31,7 +31,7 @@ public class ChangePassword  extends Activity {
                 if(mypassword.equals("123456")){
                     p1=xmm.getText().toString();
                     p2=zcsr.getText().toString();
-                    if(p1.equals(p2)){
+                    if(p1.equals(p2)&&!p1.equals("")){
                         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ChangePassword.this);
                         builder.setTitle("通知"); //设置标题
                         builder.setMessage("密码修改成功"); //设置内容

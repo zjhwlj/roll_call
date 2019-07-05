@@ -134,7 +134,7 @@ public class Signup extends Activity {
                 } else {
                     mima = password.getText().toString();
                     confmima = confimPassword.getText().toString();
-                    if (mima != null && confmima != null) {
+                    if (!mima.equals("") && !confmima.equals("")) {
                         if (mima.equals(confmima)) {
                         } else {
                             toast("两次密码不一致");
@@ -150,7 +150,7 @@ public class Signup extends Activity {
             public void onClick(View v) {
                 mima = password.getText().toString();
                 confmima = confimPassword.getText().toString();
-                if (mima != null && confmima != null) {
+                if (!mima.equals("") && !confmima.equals("")) {
                     if (mima.equals(confmima) && flag == 1) {
                         viable = true;
                     } else {

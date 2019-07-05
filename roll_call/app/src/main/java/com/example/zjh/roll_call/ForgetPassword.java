@@ -90,7 +90,7 @@ public class ForgetPassword extends Activity {
             @Override
             public void onClick(View v) {
                 phonenumber = phone.getText().toString();
-                if(phonenumber!=null)
+                if(!phonenumber.equals(""))
                     alterWarning();
                 else
                     toast("请输入手机号");

@@ -25,13 +25,13 @@
         <ImageView
             android:layout_width="40dp"
             android:background="@drawable/sousuo"
-            android:id="@+id/searchImg"
+            android:id="@+id/stusearchImg"
             android:layout_alignLeft="@+id/courseCode"
             android:layout_height="40dp" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="搜索"
+            android:text="扫描"
             android:id="@+id/searchcourse"
             android:layout_alignRight="@+id/courseCode" />
     </RelativeLayout>
@@ -42,7 +42,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="60dp"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
     </ListView>

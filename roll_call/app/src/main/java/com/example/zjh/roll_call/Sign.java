@@ -28,6 +28,7 @@ public class Sign extends AppCompatActivity {
     private String jw;
     private int flag;
     public static int isdect=0;
+    public static int courseid=0;
     private TextView statute;
     Calendar cal;
     private LocationManager locationManager;
@@ -107,32 +108,55 @@ public class Sign extends AppCompatActivity {
                             new String[]{Manifest.permission.CAMERA}, 1);
 
                 } else {
-                    if(((hour * 60 + minute) >=480 && (hour * 60 + minute )<=510 )|| ((hour* 60 + minute) >=690 && (hour * 60 + minute )<= 720)) {
-                    if (flag == 1) {
-                        startActivity(new Intent(Sign.this, DetectActivity.class));
-                        if(isdect ==1) {
-                            Toast.makeText(Sign.this, "签到成功", Toast.LENGTH_LONG).show();
-                            statute.setText("签到成功");
-                            Drawable drawable = getResources().getDrawable(R.drawable.hs);
-                            startSign.setBackground(drawable);
-                            flag = 2;
+                    if (courseid == 1) {
+                        if (((hour * 60 + minute) >= 470 && (hour * 60 + minute) <= 500) || ((hour * 60 + minute) >= 635 && (hour * 60 + minute) <= 665)) {
+                            if (flag == 1) {
+                                startActivity(new Intent(Sign.this, DetectActivity.class));
+                                if (isdect == 1) {
+                                    Toast.makeText(Sign.this, "签到成功", Toast.LENGTH_LONG).show();
+                                    statute.setText("签到成功");
+                                    Drawable drawable = getResources().getDrawable(R.drawable.hs);
+                                    startSign.setBackground(drawable);
+                                    flag = 2;
+                                } else {
+                                    Toast.makeText(Sign.this, "人脸检测失败", Toast.LENGTH_LONG).show();
+                                    statute.setText("签到成功，人脸检测失败");
+                                }
+                            } else if (flag == 0) {
+                                Toast.makeText(Sign.this, "请先获取位置", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Sign.this, "请勿重复签到", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(Sign.this, hour + ":" + minute + "不在签到时间内,上课前半小时和下课前半小时可签到", Toast.LENGTH_LONG).show();
+                            statute.setText("签到失败，不在签到时间内,上课前半小时和下课前半小时可签到");
                         }
-                        else{
-                            Toast.makeText(Sign.this, "人脸检测失败", Toast.LENGTH_LONG).show();
-                            statute.setText("签到成功，人脸检测失败");
+                    }
+                    else {
+                        if (((hour * 60 + minute) >= 810 && (hour * 60 + minute) <= 840) || ((hour * 60 + minute) >= 665 && (hour * 60 + minute) <= 995)) {
+                            if (flag == 1) {
+                                startActivity(new Intent(Sign.this, DetectActivity.class));
+                                if (isdect == 1) {
+                                    Toast.makeText(Sign.this, "签到成功", Toast.LENGTH_LONG).show();
+                                    statute.setText("签到成功");
+                                    Drawable drawable = getResources().getDrawable(R.drawable.hs);
+                                    startSign.setBackground(drawable);
+                                    flag = 2;
+                                } else {
+                                    Toast.makeText(Sign.this, "人脸检测失败", Toast.LENGTH_LONG).show();
+                                    statute.setText("签到成功，人脸检测失败");
+                                }
+                            } else if (flag == 0) {
+                                Toast.makeText(Sign.this, "请先获取位置", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Sign.this, "请勿重复签到", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(Sign.this, hour + ":" + minute + "不在签到时间内,上课前半小时和下课前半小时可签到", Toast.LENGTH_LONG).show();
+                            statute.setText("签到失败，不在签到时间内,上课前半小时和下课前半小时可签到");
                         }
-                    } else if (flag == 0) {
-                        Toast.makeText(Sign.this, "请先获取位置", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(Sign.this, "请勿重复签到", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else{
-                    Toast.makeText(Sign.this, hour+":"+minute+"不在签到时间内,上课前半小时和下课前半小时可签到",Toast.LENGTH_LONG).show();
-                        statute.setText("签到失败，不在签到时间内,上课前半小时和下课前半小时可签到");
-                }
-                }
-
             }
         });
     }

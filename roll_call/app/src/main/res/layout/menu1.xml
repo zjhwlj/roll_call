@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:text="陈德"
+                android:text="teacher"
                 android:id="@+id/identity"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
         android:orientation="vertical">
         <TextView
             style="@style/MenuTabText"
-            android:text="2344213"
+            android:text="10010"
             />
         <TextView
             style="@style/MenuTabText"
@@ -47,7 +47,7 @@
             />
         <TextView
             style="@style/MenuTabText"
-            android:text="所教课程数： 1"
+            android:text="所教课程数： 2 "
             />
         <View
             android:layout_width="match_parent"
