@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.SchoolDao">
+	<resultMap id="schoolMap" type="com.wanghuan.model.sys.SchoolsEntity">
+		<id column="school_id" property="schoolId" />
+		<result column="school_name" property="schoolName" />
+		<result column="am_classtime" property="amClasstime" />
+		<result column="am_afterclasstime" property="amAfterclasstime" />
+		<result column="pm_classtime" property="pmClasstime" />
+		<result column="pm_afterclasstime" property="pmAfterclasstime" />
+	</resultMap>
+	<!-- 获取school列表 -->
+	<select id="schoolsList" resultMap="schoolMap">
+	<![CDATA[select * from sys_school]]>
+		<where>
+			<if test="schoolName != null and schoolName != ''">
+				school_name = #{schoolName}
+			</if>
+		</where>
+	    <![CDATA[ order by school_id desc ]]>
+		<if test="pageSize != null and start != null ">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	<!-- 得到角色全部数据 -->
+	<select id="allSchools" resultMap="schoolMap">
+		select * from sys_school
+	</select>
+	<!-- 获取user列表的总量 -->
+	<select id="schoolsSize" resultType="Integer">
+	    <![CDATA[select count(*) from sys_school]]>
+		<where>
+			<if test="schoolName != null and schoolName != ''">
+				school_name = #{schoolName}
+			</if>
+		</where>
+	</select>
+
+	<select id="getSchoolEntityBySchoolName" resultMap="schoolMap">
+		select * from sys_school
+		<where>
+			login_name = #{loginName}
+		</where>
+	</select>
+	<!-- 新建用户信息 -->
+	<insert id="insertSchool">
+		insert into sys_school (school_name,am_classtime,am_afterclasstime,pm_classtime,pm_afterclasstime)
+		values
+		(#{schoolEntity.schoolName},#{schoolEntity.amClasstime},#{schoolEntity.amAfterclasstime},#{schoolEntity.pmClasstime},#{schoolEntity.pmAfterclasstime})
+	</insert>
+	<!-- 更新用户信息 -->
+	<update id="updateSchool">
+		update sys_school set
+		school_name = #{schoolEntity.schoolName},
+		am_classtime =
+		#{schoolEntity.amClasstime} ,
+		am_afterclasstime = #{schoolEntity.amAfterclasstime},
+		pm_classtime =
+		#{schoolEntity.pmClasstime},
+		pm_afterclasstime = #{schoolEntity.pmAfterclasstime},
+		<where>
+			school_id = #{schoolEntity.schoolId}
+		</where>
+	</update>
+	<!-- 删除用户信息 -->
+	<delete id="deleteSchools">
+		delete from sys_school
+		<where>
+			<if test="groupId !=null">
+				school_id in
+				<foreach collection="groupId" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</delete>
+</mapper>
