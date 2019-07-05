@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.SignDao">
+	<resultMap id="signMap" type="com.wanghuan.model.sys.SignEntity">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="student_id" property="studentId" />
+		<result column="course_name" property="courseName" />
+		<result column="sign_num" property="signNum" />
+	</resultMap>
+	<!-- 获取user列表 -->
+	<select id="signsList" resultMap="signMap">
+	<![CDATA[select * from sys_sign]]>
+		<where>
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+		</where>
+	    <![CDATA[ order by id desc ]]>
+		<if test="pageSize != null and start != null ">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	<!-- 获取user列表的总量 -->
+	<select id="signsSize" resultType="Integer">
+	    <![CDATA[select count(*) from sys_sign]]>
+		<where>
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+		</where>
+	</select>
+
+	<select id="allSigns" resultMap="signMap">
+		select * from sys_sign
+	</select>
+<!--	<insert id="insert">-->
+<!--		<if test="signEntity != null">-->
+<!--			insert into sys_sign (name,sex,age) values-->
+<!--			(#{signEntity.name},#{signEntity.sex},#{signEntity.age})-->
+<!--		</if>-->
+<!--	</insert>-->
+<!--	<delete id="del">-->
+<!--		delete from sys_sign-->
+<!--		<where>-->
+<!--			<if test="signEntity.id != null and signEntity.id != ''">id = #{signEntity.id}</if>-->
+<!--			<if test="signEntity.name != null and signEntity.name != ''">and name = #{signEntity.name}</if>-->
+<!--			<if test="signEntity.sex != null and signEntity.sex != ''">and sex = #{signEntity.sex }</if>-->
+<!--			<if test="signEntity.age != null and signEntity.age != ''">and age = #{signEntity.age}</if>-->
+<!--		</where>-->
+<!--	</delete>-->
+<!--	<update id="update">-->
+<!--		update sys_sign set name = #{name},sex = #{sex},age = #{age}-->
+<!--		<where>-->
+<!--			id = #{id}-->
+<!--		</where>-->
+<!--	</update>-->
+<!--	<select id="select">-->
+<!--		select * from sys_sign-->
+<!--		<where>-->
+<!--			<if test="id != null">id = #{id}</if>-->
+<!--			<if test="name != null">and name = #{name}</if>-->
+<!--			<if test="sex != null">and sex = #{sex}</if>-->
+<!--			<if test="age != null">and age = #{age}</if>-->
+<!--		</where>-->
+<!--	</select>-->
+	<select id="getSignEntityByName" resultMap="signMap">
+		select * from sys_sign
+		<where>
+			name = #{name}
+		</where>
+	</select>
+	<!-- 新建用户信息 -->
+	<insert id="insertSign">
+		insert into sys_sign (name,student_id,course_name,sign_num)
+		values
+		(#{signEntity.name},#{signEntity.studentId},#{signEntity.courseName},#{signEntity.signNum})
+	</insert>
+	<!-- 更新用户信息 -->
+	<update id="updateSign">
+		update sys_sign set
+		name = #{signEntity.name},
+		student_id =
+		#{signEntity.studentId},
+		course_name = #{signEntity.courseName},
+		sign_num =
+		#{signEntity.signNum}
+		<where>
+			id = #{signEntity.id}
+		</where>
+	</update>
+	<!-- 删除用户信息 -->
+	<delete id="deleteSigns">
+		delete from sys_sign
+		<where>
+			<if test="groupId !=null">
+				id in
+				<foreach collection="groupId" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</delete>
+</mapper>

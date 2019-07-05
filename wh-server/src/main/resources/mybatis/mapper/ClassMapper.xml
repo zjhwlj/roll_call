@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.ClassDao">
+	<resultMap id="classMap" type="com.wanghuan.model.sys.ClassEntity">
+		<id column="id" property="id" />
+		<result column="course_name" property="courseName" />
+		<result column="course_id" property="courseId" />
+		<result column="teacher_name" property="teacherName" />
+		<result column="class_week" property="classWeek" />
+		<result column="first_classtime" property="firstClasstime" />
+		<result column="class_num" property="classNum" />
+		<result column="credit" property="credit" />
+		<result column="classroom" property="classroom" />
+	</resultMap>
+	<!-- 获取course列表 -->
+	<select id="classList" resultMap="classMap">
+	<![CDATA[select * from sys_class]]>
+		<where>
+			<if test="courseName != null and courseName != ''">
+				course_name = #{courseName}
+			</if>
+		</where>
+	    <![CDATA[ order by id desc ]]>
+		<if test="pageSize != null and start != null ">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	<!-- 得到角色全部数据 -->
+	<select id="allClass" resultMap="classMap">
+		select * from sys_class
+	</select>
+	<!-- 获取user列表的总量 -->
+	<select id="classSize" resultType="Integer">
+	    <![CDATA[select count(*) from sys_class]]>
+		<where>
+			<if test="courseName != null and courseName != ''">
+				course_name = #{courseName}
+			</if>
+		</where>
+	</select>
+
+	<select id="getClassEntityByCourseName" resultMap="classMap">
+		select * from sys_class
+		<where>
+			course_name = #{courseName}
+		</where>
+	</select>
+	<!-- 新建用户信息 -->
+	<insert id="insertClass">
+		insert into sys_class (course_name,course_id,teacher_name,class_week,first_classtime,class_num,credit,classroom)
+		values
+		(#{classEntity.courseName},#{classEntity.courseId},#{classEntity.teacherName},#{classEntity.classWeek},
+		#{classEntity.firstClasstime},#{classEntity.classNum},#{classEntity.credit},#{classEntity.classroom})
+	</insert>
+	<!-- 更新用户信息 -->
+	<update id="updateClass">
+		update sys_class set
+		course_name = #{classEntity.courseName},
+		course_id =#{classEntity.courseId} ,
+		teacher_name = #{classEntity.teacherName},
+		class_week =#{classEntity.classWeek},
+		first_classtime = #{classEntity.firstClasstime},
+		class_num = #{classEntity.classNum},
+		credit = #{classEntity.credit},
+		classroom = #{classEntity.classroom},
+		<where>
+			id = #{classEntity.id}
+		</where>
+	</update>
+	<!-- 删除用户信息 -->
+	<delete id="deleteClass">
+		delete from sys_class
+		<where>
+			<if test="groupId !=null">
+				id in
+				<foreach collection="groupId" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</delete>
+</mapper>

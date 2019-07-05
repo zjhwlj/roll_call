@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanghuan.dao.StudentDao">
+	<resultMap id="studentMap" type="com.wanghuan.model.sys.StudentEntity">
+		<id column="id" property="id" />
+		<result column="student_name" property="studentName" />
+		<result column="student_id" property="studentId" />
+		<result column="school_name" property="schoolName" />
+		<result column="major" property="major" />
+	</resultMap>
+	<!-- 获取school列表 -->
+	<select id="studentList" resultMap="studentMap">
+	<![CDATA[select * from sys_student]]>
+		<where>
+			<if test="studentName != null and studentName != ''">
+				student_name = #{studentName}
+			</if>
+		</where>
+	    <![CDATA[ order by id desc ]]>
+		<if test="pageSize != null and start != null ">
+			limit #{start},#{pageSize}
+		</if>
+	</select>
+	<!-- 得到角色全部数据 -->
+	<select id="allStudent" resultMap="studentMap">
+		select * from sys_student
+	</select>
+	<!-- 获取user列表的总量 -->
+	<select id="studentSize" resultType="Integer">
+	    <![CDATA[select count(*) from sys_student]]>
+		<where>
+			<if test="studentName != null and studentName != ''">
+				student_name = #{studentName}
+			</if>
+		</where>
+	</select>
+
+	<select id="getStudentEntityByStudentName" resultMap="studentMap">
+		select * from sys_student
+		<where>
+			student_name = #{studentName}
+		</where>
+	</select>
+	<!-- 新建用户信息 -->
+	<insert id="insertStudent">
+		insert into sys_student (student_name,student_id,school_name,major)
+		values
+		(#{studentEntity.studentName},#{studentEntity.studentId},#{studentEntity.schoolName},#{studentEntity.major})
+	</insert>
+	<!-- 更新用户信息 -->
+	<update id="updateStudent">
+		update sys_student set
+		student_name = #{studentEntity.studentName},
+		student_id =#{studentEntity.studentId} ,
+		school_name = #{studentEntity.schoolName},
+		major = #{studentEntity.major},
+		<where>
+			id = #{studentEntity.id}
+		</where>
+	</update>
+	<!-- 删除用户信息 -->
+	<delete id="deleteStudent">
+		delete from sys_student
+		<where>
+			<if test="groupId !=null">
+				id in
+				<foreach collection="groupId" item="item" index="index"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</delete>
+</mapper>
